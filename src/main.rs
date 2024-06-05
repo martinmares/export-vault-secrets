@@ -48,7 +48,7 @@ async fn main() -> anyhow::Result<()> {
                     info!("secrets: {:?}", secrets)
                 }
                 Err(client_error) => {
-                    error!("client_error: {:?}", client_error);
+                    error!("get_kv_error: {:?}", client_error);
                 }
             }
         }
