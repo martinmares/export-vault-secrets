@@ -9,9 +9,15 @@ use vaultrs::kv1;
 async fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt::init();
     let vault_server = env::var("VAULT_SERVER_URL").unwrap();
-    let vault_path = String::from("data/gitlab/it/tsm_group/tsm-apps/tsm-build-app/dev");
-    let vault_role = Some("devops_tools_production_vault_tsm2_ro".to_string());
+    let vault_path = String::from("data/data/gitlab/it/tsm_group/tsm-apps/tsm-build-app/dev");
+    let vault_role = Some(env::var("VAULT_AUTH_ROLE").unwrap());
+    // let vault_role = Some("devops_tools_production_vault_tsm2_ro".to_string());
     let vault_id_token = env::var("VAULT_ID_TOKEN").unwrap();
+
+    info!("vault_server: {}", vault_server);
+    info!("vault_path: {}", vault_path);
+    info!("vault_role: {}", vault_role);
+    info!("vault_id_token: {}", vault_id_token);
 
     // Create a client
     let mut client = VaultClient::new(
