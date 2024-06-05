@@ -1,10 +1,7 @@
-use std::collections::HashMap;
 use std::env;
 use tracing::*;
-use vaultrs::auth::approle::role::secret;
 use vaultrs::auth::oidc;
 use vaultrs::client::{Client, VaultClient, VaultClientSettingsBuilder};
-use vaultrs::error::ClientError;
 use vaultrs::kv1;
 
 #[tokio::main]
@@ -79,21 +76,6 @@ async fn main() -> anyhow::Result<()> {
             error!("client_error: {:?}", client_error);
         }
     }
-
-    // if let Ok(auth_info) = auth_info {
-    //     client.set_token(&auth_info.client_token);
-    //     let secrets: HashMap<String, String> =
-    //         kv1::get(&client, "data", &vault_path).await.unwrap();
-
-    //     println!("client: {:?}", client.settings);
-    //     println!("secrets: {:?}", secrets);
-
-    //     // println!("LDAP_USER_NAME: {:?}", read_secrets["LDAP_USER_NAME"]);
-    //     // println!(
-    //     //     "LDAP_USER_PASSWORD: {:?}",
-    //     //     read_secrets["LDAP_USER_PASSWORD"]
-    //     // );
-    // }
 
     Ok(())
 }
