@@ -47,7 +47,10 @@ async fn main() -> anyhow::Result<()> {
 
             match secrets {
                 Ok(secrets) => {
-                    info!("secrets: {:?}", secrets)
+                    let data = secrets.data.as_object();
+                    if let Some(data) = data {
+                        info!("data: {:?}", data)
+                    }
                 }
                 Err(client_error) => {
                     error!("get_kv_error: {:?}", client_error);
