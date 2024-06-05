@@ -49,7 +49,7 @@ async fn main() -> anyhow::Result<()> {
                 Ok(secrets) => {
                     let data = secrets.data.as_object();
                     if let Some(data) = data {
-                        info!("data: {:?}", data)
+                        info!("data: {:?}", data["data"]);
                     }
                 }
                 Err(client_error) => {
