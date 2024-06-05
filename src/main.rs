@@ -32,13 +32,7 @@ async fn main() -> anyhow::Result<()> {
     )
     .unwrap();
 
-    let auth_info = oidc::login(
-        &client,
-        String::default().as_str(),
-        &vault_id_token,
-        vault_role,
-    )
-    .await;
+    let auth_info = oidc::login(&client, "kv", &vault_id_token, vault_role).await;
 
     match auth_info {
         Ok(auth_info) => {
