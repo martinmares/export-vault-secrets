@@ -11,7 +11,7 @@ async fn main() -> anyhow::Result<()> {
 
     // let vault_server = env::var("VAULT_SERVER_URL").unwrap();
     let vault_server = "https://devops.cetin:8200";
-    let vault_path = String::from("data/gitlab/it/tsm_group/tsm-apps/tsm-build-app/dev/");
+    let vault_path = String::from("kv/data/gitlab/it/tsm_group/tsm-apps/tsm-build-app/dev");
     let vault_role = Some(env::var("VAULT_AUTH_ROLE").unwrap());
     // let vault_role = Some("devops_tools_production_vault_tsm2_ro".to_string());
     let vault_id_token = env::var("VAULT_ID_TOKEN").unwrap();
@@ -37,13 +37,13 @@ async fn main() -> anyhow::Result<()> {
     match auth_info {
         Ok(auth_info) => {
             client.set_token(&auth_info.client_token);
-            let secrets: HashMap<String, String> = kv1::get(&client, "oidc", &vault_path).await?;
+            let secrets: HashMap<String, String> = kv1::get(&client, "", &vault_path).await?;
 
             info!("client: {:?}", client.settings);
             info!("secrets: {:?}", secrets)
         }
         Err(client_error) => {
-            error!("client_erorr: {:?}", client_error);
+            error!("client_error: {:?}", client_error);
         }
     }
 
