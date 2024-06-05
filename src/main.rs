@@ -40,8 +40,7 @@ async fn main() -> anyhow::Result<()> {
         Ok(auth_info) => {
             client.set_token(&auth_info.client_token);
             info!("client: {:?}", client.settings);
-            let secrets: Result<HashMap<String, String>, ClientError> =
-                kv1::get(&client, "kv", &vault_path).await;
+            let secrets: Result<String, ClientError> = kv1::get(&client, "kv", &vault_path).await;
 
             match secrets {
                 Ok(secrets) => {
