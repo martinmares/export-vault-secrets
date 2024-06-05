@@ -1,0 +1,8 @@
+[package]
+name = "export-vault-secrets"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.38.0", features = ["full"] }
+vaultrs = "0.7.2"
