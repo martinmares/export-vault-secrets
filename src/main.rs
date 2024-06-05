@@ -23,12 +23,12 @@ async fn main() -> anyhow::Result<()> {
     )
     .unwrap();
 
-    let auth_info = oidc::login(&client, "data", &vault_id_token, vault_role).await;
+    let auth_info = oidc::login(&client, "kv", &vault_id_token, vault_role).await;
 
     match auth_info {
         Ok(auth_info) => {
             client.set_token(&auth_info.client_token);
-            let secrets: HashMap<String, String> = kv1::get(&client, "data", &vault_path).await?;
+            let secrets: HashMap<String, String> = kv1::get(&client, "kv", &vault_path).await?;
 
             info!("client: {:?}", client.settings);
             info!("secrets: {:?}", secrets)
