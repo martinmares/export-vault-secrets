@@ -23,18 +23,32 @@ async fn main() {
 
     let auth_info = oidc::login(&client, "data", &vault_id_token, vault_role).await;
 
-    if let Ok(auth_info) = auth_info {
-        client.set_token(&auth_info.client_token);
-        let secrets: HashMap<String, String> =
-            kv1::get(&client, "data", &vault_path).await.unwrap();
+    match auth_info {
+        Ok(auth_info) => {
+            client.set_token(&auth_info.client_token);
+            let secrets: HashMap<String, String> =
+                kv1::get(&client, "data", &vault_path).await.unwrap();
 
-        println!("client: {:?}", client.settings);
-        println!("secrets: {:?}", secrets);
-
-        // println!("LDAP_USER_NAME: {:?}", read_secrets["LDAP_USER_NAME"]);
-        // println!(
-        //     "LDAP_USER_PASSWORD: {:?}",
-        //     read_secrets["LDAP_USER_PASSWORD"]
-        // );
+            println!("client: {:?}", client.settings);
+            println!("secrets: {:?}", secrets);
+        }
+        Err(client_error) => {
+            println!("client_erorr: {:?}", client_error);
+        }
     }
+
+    // if let Ok(auth_info) = auth_info {
+    //     client.set_token(&auth_info.client_token);
+    //     let secrets: HashMap<String, String> =
+    //         kv1::get(&client, "data", &vault_path).await.unwrap();
+
+    //     println!("client: {:?}", client.settings);
+    //     println!("secrets: {:?}", secrets);
+
+    //     // println!("LDAP_USER_NAME: {:?}", read_secrets["LDAP_USER_NAME"]);
+    //     // println!(
+    //     //     "LDAP_USER_PASSWORD: {:?}",
+    //     //     read_secrets["LDAP_USER_PASSWORD"]
+    //     // );
+    // }
 }
