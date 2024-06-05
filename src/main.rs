@@ -1,8 +1,10 @@
 use std::collections::HashMap;
 use std::env;
 use tracing::*;
+use vaultrs::auth::approle::role::secret;
 use vaultrs::auth::oidc;
 use vaultrs::client::{Client, VaultClient, VaultClientSettingsBuilder};
+use vaultrs::error::ClientError;
 use vaultrs::kv1;
 
 #[tokio::main]
@@ -37,10 +39,18 @@ async fn main() -> anyhow::Result<()> {
     match auth_info {
         Ok(auth_info) => {
             client.set_token(&auth_info.client_token);
-            let secrets: HashMap<String, String> = kv1::get(&client, "kv", &vault_path).await?;
-
             info!("client: {:?}", client.settings);
-            info!("secrets: {:?}", secrets)
+            let secrets: Result<HashMap<String, String>, ClientError> =
+                kv1::get(&client, "kv", &vault_path).await;
+
+            match secrets {
+                Ok(secrets) => {
+                    info!("secrets: {:?}", secrets)
+                }
+                Err(client_error) => {
+                    error!("client_error: {:?}", client_error);
+                }
+            }
         }
         Err(client_error) => {
             error!("client_error: {:?}", client_error);
