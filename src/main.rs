@@ -16,7 +16,7 @@ async fn main() -> anyhow::Result<()> {
 
     info!("vault_server: {}", vault_server);
     info!("vault_path: {}", vault_path);
-    info!("vault_role: {}", vault_role);
+    info!("vault_role: {}", vault_role.clone().unwrap());
     info!("vault_id_token: {}", vault_id_token);
 
     // Create a client
