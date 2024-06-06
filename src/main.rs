@@ -49,22 +49,25 @@ async fn main() -> anyhow::Result<()> {
                     if let Some(data) = data {
                         let data_inside = data["data"].as_object();
                         if let Some(data_inside) = data_inside {
-                            info!(
-                                "repo_kube_build_app   => {}",
-                                data_inside["repo_kube_build_app"]
-                            );
-                            info!(
-                                "repo_tsm_deploy       => {}",
-                                data_inside["repo_tsm_deploy"]
-                            );
-                            info!(
-                                "repo_tsm_environments => {}",
-                                data_inside["repo_tsm_environments"]
-                            );
-                            info!(
-                                "repo_tsm_versions     => {}",
-                                data_inside["repo_tsm_versions"]
-                            );
+                            for key in data_inside.keys() {
+                                info!("key[\"{}\"] = {:?}", key, data_inside[key]);
+                            }
+                            // info!(
+                            //     "repo_kube_build_app   => {}",
+                            //     data_inside["repo_kube_build_app"]
+                            // );
+                            // info!(
+                            //     "repo_tsm_deploy       => {}",
+                            //     data_inside["repo_tsm_deploy"]
+                            // );
+                            // info!(
+                            //     "repo_tsm_environments => {}",
+                            //     data_inside["repo_tsm_environments"]
+                            // );
+                            // info!(
+                            //     "repo_tsm_versions     => {}",
+                            //     data_inside["repo_tsm_versions"]
+                            // );
                         }
                     }
                 }
