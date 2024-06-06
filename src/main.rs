@@ -47,10 +47,12 @@ async fn main() -> anyhow::Result<()> {
                 Ok(secrets) => {
                     let data = secrets.data.as_object();
                     if let Some(data) = data {
+                        warn!("data: {:?}", data);
                         for key in data.keys() {
                             info!("global key[\"{}\"] = {:?}", key, data[key]);
                         }
                         let data_inside = data["data"].as_object();
+                        warn!("data_inside: {:?}", data_inside);
                         if let Some(data_inside) = data_inside {
                             for key in data_inside.keys() {
                                 info!("data key[\"{}\"] = {:?}", key, data_inside[key]);
