@@ -1,10 +1,9 @@
 mod conf;
 
 use clap::{command, value_parser, Arg};
-use env_logger::Env;
-use log::{error, info};
 use std::env;
 use std::path::PathBuf;
+use tracing::*;
 use twelf::Layer;
 use vaultrs::auth::oidc;
 use vaultrs::client::{Client, VaultClient, VaultClientSettingsBuilder};
@@ -12,7 +11,7 @@ use vaultrs::kv1;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
+    tracing_subscriber::fmt::init();
     let matches = command!()
         .arg(
             Arg::new("config")
