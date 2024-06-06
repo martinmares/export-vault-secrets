@@ -2,8 +2,7 @@ use std::env;
 use tracing::*;
 use vaultrs::auth::oidc;
 use vaultrs::client::{Client, VaultClient, VaultClientSettingsBuilder};
-// use vaultrs::kv1;
-use vaultrs::kv2;
+use vaultrs::kv1;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -42,13 +41,11 @@ async fn main() -> anyhow::Result<()> {
             // let secrets: Result<HashMap<String, String>, ClientError> =
             //     kv1::get(&client, "kv", &vault_path).await;
 
-            // let secrets = kv1::get_raw(&client, "kv", &vault_path).await;
-            let secrets: Result<serde_json::Value, vaultrs::error::ClientError> =
-                kv2::read(&client, "kv", &vault_path).await;
+            let secrets = kv1::get_raw(&client, "kv", &vault_path).await;
 
             match secrets {
                 Ok(secrets) => {
-                    let data = secrets.as_object();
+                    let data = secrets.data.as_object();
                     if let Some(data) = data {
                         let data_inside = data["data"].as_object();
                         if let Some(data_inside) = data_inside {
