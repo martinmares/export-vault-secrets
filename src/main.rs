@@ -115,7 +115,7 @@ async fn main() -> anyhow::Result<()> {
                                         if var.get_key() == key {
                                             let _key = key.clone();
                                             let _quoted: String = val.quoted(Bash);
-                                            print!(
+                                            println!(
                                                 "export {}=\"{}\"",
                                                 var.get_export_to(),
                                                 _quoted
