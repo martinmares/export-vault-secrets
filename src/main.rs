@@ -90,7 +90,8 @@ async fn main() -> anyhow::Result<()> {
     match auth_info {
         Ok(auth_info) => {
             client.set_token(&auth_info.client_token);
-            info!("client: {:?}", client.settings);
+            // info!("client: {:?}", client.settings);
+            info!("Vault client started!");
             // let secrets: Result<HashMap<String, String>, ClientError> =
             //     kv1::get(&client, "kv", &vault_path).await;
 
@@ -110,7 +111,7 @@ async fn main() -> anyhow::Result<()> {
                         if let Some(data_inside) = data_inside {
                             for key in data_inside.keys() {
                                 if let Some(val) = data_inside[key].as_str() {
-                                    info!("data key[\"{}\"] = {}", key, val);
+                                    info!("Found key \"{}\"", key);
                                     'outer: for var in config.get_vars() {
                                         if var.get_key() == key {
                                             let quoted: String = val.quoted(Sh);
@@ -140,12 +141,12 @@ async fn main() -> anyhow::Result<()> {
                     }
                 }
                 Err(client_error) => {
-                    error!("get_kv_error: {:?}", client_error);
+                    error!("KV get error: {:?}", client_error);
                 }
             }
         }
         Err(client_error) => {
-            error!("client_error: {:?}", client_error);
+            error!("Vault client error: {:?}", client_error);
         }
     }
 
