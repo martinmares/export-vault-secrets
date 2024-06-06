@@ -110,16 +110,11 @@ async fn main() -> anyhow::Result<()> {
                         if let Some(data_inside) = data_inside {
                             for key in data_inside.keys() {
                                 if let Some(val) = data_inside[key].as_str() {
-                                    info!("data key[\"{}\"] = {:?}", key, data_inside[key]);
+                                    info!("data key[\"{}\"] = {}", key, val);
                                     'outer: for var in config.get_vars() {
                                         if var.get_key() == key {
-                                            let _key = key.clone();
-                                            let _quoted: String = val.quoted(Sh);
-                                            println!(
-                                                "export {}=\"{}\"",
-                                                var.get_export_to(),
-                                                _quoted
-                                            );
+                                            let quoted: String = val.quoted(Sh);
+                                            println!("export {}={}", var.get_export_to(), quoted);
                                             break 'outer;
                                         }
                                     }
