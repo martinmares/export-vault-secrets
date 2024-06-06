@@ -3,7 +3,7 @@ stages:
 
 build_job:
   stage: build
-  image: rust:alpine
+  image: harbor.cetin/docker-hub/rust:alpine
   script:
     - cargo build --release
   artifacts:
