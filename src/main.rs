@@ -1,9 +1,11 @@
 mod conf;
 
 use clap::{command, value_parser, Arg};
+use shell_quote::{Bash, QuoteRefExt};
 use std::env;
 use std::path::PathBuf;
 use tracing::*;
+use tracing_subscriber::FmtSubscriber;
 use twelf::Layer;
 use vaultrs::auth::oidc;
 use vaultrs::client::{Client, VaultClient, VaultClientSettingsBuilder};
@@ -11,7 +13,14 @@ use vaultrs::kv1;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    tracing_subscriber::fmt::init();
+    // tracing_subscriber::fmt::init();
+    let subscriber = FmtSubscriber::builder()
+        .with_writer(std::io::stderr)
+        .with_max_level(Level::INFO)
+        .finish();
+
+    tracing::subscriber::set_global_default(subscriber).expect("Sets default subscriber failed");
+
     let matches = command!()
         .arg(
             Arg::new("config")
@@ -101,6 +110,14 @@ async fn main() -> anyhow::Result<()> {
                         if let Some(data_inside) = data_inside {
                             for key in data_inside.keys() {
                                 info!("data key[\"{}\"] = {:?}", key, data_inside[key]);
+                                'outer: for var in config.get_vars() {
+                                    if var.get_key() == key {
+                                        let _key = key.clone();
+                                        let _quoted: String = _key.quoted(Bash);
+                                        print!("export {}=\"{}\"", var.get_export_to(), _quoted);
+                                        break 'outer;
+                                    }
+                                }
                             }
                             // info!(
                             //     "repo_kube_build_app   => {}",

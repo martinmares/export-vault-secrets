@@ -59,3 +59,12 @@ impl Vault {
         &self.path
     }
 }
+
+impl Var {
+    pub fn get_key(&self) -> &str {
+        &self.key
+    }
+    pub fn get_export_to(&self) -> &str {
+        &self.export_to
+    }
+}
