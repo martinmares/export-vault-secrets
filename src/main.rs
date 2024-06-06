@@ -1,7 +1,7 @@
 mod conf;
 
 use clap::{command, value_parser, Arg};
-use shell_quote::{Bash, QuoteRefExt};
+use shell_quote::{QuoteRefExt, Sh};
 use std::env;
 use std::path::PathBuf;
 use tracing::*;
@@ -114,7 +114,7 @@ async fn main() -> anyhow::Result<()> {
                                     'outer: for var in config.get_vars() {
                                         if var.get_key() == key {
                                             let _key = key.clone();
-                                            let _quoted: String = val.quoted(Bash);
+                                            let _quoted: String = val.quoted(Sh);
                                             println!(
                                                 "export {}=\"{}\"",
                                                 var.get_export_to(),
