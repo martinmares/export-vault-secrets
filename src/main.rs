@@ -10,7 +10,7 @@ async fn main() -> anyhow::Result<()> {
 
     // let vault_server = env::var("VAULT_SERVER_URL").unwrap();
     let vault_server = "https://devops.cetin:8200";
-    let vault_path = String::from("data/gitlab/it/tsm_group/tsm-apps/tsm-build-app/dev");
+    let vault_path = String::from("data/gitlab/it/tsm_group/tsm-apps/tsm-build-app/test");
     let vault_role = Some(env::var("VAULT_AUTH_ROLE").unwrap());
     // let vault_role = Some("devops_tools_production_vault_tsm2_ro".to_string());
     let vault_id_token = env::var("VAULT_ID_TOKEN").unwrap();
