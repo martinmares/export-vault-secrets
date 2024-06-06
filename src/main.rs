@@ -39,7 +39,7 @@ async fn main() -> anyhow::Result<()> {
         panic!("config path must be set!")
     };
 
-    info!("Args config_path={:?}", config_path);
+    info!("Args config path={:?}", config_path);
 
     let config: conf::Config;
 
