@@ -4,8 +4,9 @@ use clap::{command, value_parser, Arg};
 use shell_quote::{QuoteRefExt, Sh};
 use std::env;
 use std::path::PathBuf;
-use tracing::*;
-use tracing_subscriber::FmtSubscriber;
+use tracing::{error, info};
+use tracing_subscriber;
+use tracing_subscriber::EnvFilter;
 use twelf::Layer;
 use vaultrs::auth::oidc;
 use vaultrs::client::{Client, VaultClient, VaultClientSettingsBuilder};
@@ -13,12 +14,13 @@ use vaultrs::kv1;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let subscriber = FmtSubscriber::builder()
-        .with_writer(std::io::stderr)
-        .with_max_level(Level::INFO)
-        .finish();
-
-    tracing::subscriber::set_global_default(subscriber).expect("Sets default subscriber failed");
+    tracing_subscriber::fmt()
+        .with_env_filter(
+            EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info")),
+        )
+        .with_file(true)
+        .with_line_number(true)
+        .init();
 
     let matches = command!()
         .arg(
